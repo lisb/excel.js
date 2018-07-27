@@ -34,11 +34,11 @@ function extractFiles(path, sheet) {
 		})
 		.on('entry', function(entry) {
 			if (files[entry.path]) {
-				var contents = '';
+				var contents = [];
 				entry.on('data', function(data) {
-					contents += data.toString();
+					contents.push(data);
 				}).on('end', function() {
-					files[files[entry.path]].contents = contents;
+					files[files[entry.path]].contents = Buffer.concat(contents).toString();
 					files[files[entry.path]].deferred.resolve();
 				});
 			} else {
